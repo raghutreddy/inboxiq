@@ -1,0 +1,50 @@
+[
+    {
+        "id": "email_001",
+        "from": "boss@company.com",
+        "subject": "URGENT: Client presentation moved to tomorrow 9 AM",
+        "body": "Hi team, The client presentation has been moved up to tomorrow morning at 9 AM. Please have all slides finalized by tonight. Send me your sections by 6 PM today. Sarah, book the large conference room for 8:30 AM."
+    },
+    {
+        "id": "email_002",
+        "from": "colleague@company.com",
+        "subject": "Quick question about the API docs",
+        "body": "Hey, I was looking at the API documentation and I'm confused about the authentication flow. Could you explain how the OAuth token refresh works? No rush, just whenever you have a few minutes. Thanks!"
+    },
+    {
+        "id": "email_003",
+        "from": "hr@company.com",
+        "subject": "Office closed Monday",
+        "body": "Hi everyone, Just a reminder that the office will be closed next Monday for the national holiday. Enjoy your long weekend!"
+    },
+    {
+        "id": "email_004",
+        "from": "deals@megastore-offers.com",
+        "subject": "90% OFF EVERYTHING - CLICK NOW!!!",
+        "body": "CONGRATULATIONS! You've been selected for our EXCLUSIVE sale! Click here NOW before this offer expires! Limited time only!"
+    },
+    {
+        "id": "email_005",
+        "from": "pm@company.com",
+        "subject": "Sprint planning meeting Thursday 2 PM",
+        "body": "Hi team, Just a reminder that we have sprint planning this Thursday at 2 PM in Room 3B. Please come prepared with your task estimates for the next sprint. Also, bring your laptop for the Jira walkthrough."
+    },
+    {
+        "id": "email_006",
+        "from": "client@bigcorp.com",
+        "subject": "Contract renewal discussion",
+        "body": "Hi, Our current contract expires at the end of this month. We would like to discuss renewal terms and potentially expand the scope of services. Could we schedule a call this week to go over the details? Looking forward to hearing from you."
+    },
+    {
+        "id": "email_007",
+        "from": "newsletter@techweekly.com",
+        "subject": "This week in AI: New breakthroughs in reasoning",
+        "body": "Welcome to your weekly AI digest! This week: GPT-5 rumors heat up, new open-source models challenge proprietary ones, and three startups raised $100M+ in Series B rounds. Read more at techweekly.com."
+    },
+    {
+        "id": "email_008",
+        "from": "security@company.com",
+        "subject": "CRITICAL: Password reset required within 24 hours",
+        "body": "Your company password will expire in 24 hours. Please reset it immediately using the internal portal at passwords.company.com. Failure to reset will result in account lockout. If you need assistance, contact IT support."
+    }
+]
