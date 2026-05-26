@@ -52,9 +52,9 @@ Respond ONLY in this exact JSON format, nothing else:
 
     try:
         result = json.loads(result_text)
-        return result
+        return result, response
     except json.JSONDecodeError:
-        return {"error": "Failed to parse response", "raw": result_text}
+        return {"error": "Failed to parse response", "raw": result_text}, response
 
 
 # ---- Test ----

@@ -1,17 +1,21 @@
-# pipeline.py - The InboxIQ Pipeline
+# pipeline.py - The InboxIQ Pipeline with Cost Tracking
 # Chains: Classify → Draft Reply (if needed) → Extract Actions
-# This is the core engine that ties everything together
+# Now tracks every API call's token usage and cost
 
 import json
 from classifier import classify_email
 from reply_drafter import draft_reply
 from action_extractor import extract_actions
+from cost_tracker import PipelineTracker
 
 
-def process_email(email_text):
+MODEL = "gpt-4o-mini"
+
+
+def process_email(email_text, tracker):
     """
-    The main pipeline. Takes a raw email, runs all three AI steps,
-    and returns a complete triage result.
+    The main pipeline. Takes a raw email + tracker,
+    runs all three AI steps, logs costs, returns complete result.
     """
 
     result = {
@@ -22,7 +26,8 @@ def process_email(email_text):
 
     # ---- Step 1: Classify ----
     print("  [1/3] Classifying email...")
-    classification = classify_email(email_text)
+    classification, cls_response = classify_email(email_text)
+    tracker.log_call("classify", MODEL, cls_response)
     result["classification"] = classification
 
     # ---- Step 2: Draft reply (only if needed) ----
@@ -31,14 +36,16 @@ def process_email(email_text):
 
     if category in ["URGENT_ACTION", "NEEDS_REPLY"]:
         print("  [2/3] Drafting reply...")
-        reply = draft_reply(email_text, category, urgency)
+        reply, reply_response = draft_reply(email_text, category, urgency)
+        tracker.log_call("reply_draft", MODEL, reply_response)
         result["reply_draft"] = reply
     else:
         print("  [2/3] No reply needed — skipping.")
 
     # ---- Step 3: Extract action items (always) ----
     print("  [3/3] Extracting action items...")
-    actions = extract_actions(email_text)
+    actions, act_response = extract_actions(email_text)
+    tracker.log_call("extract_actions", MODEL, act_response)
     result["action_items"] = actions
 
     return result
@@ -62,7 +69,6 @@ def display_result(label, result):
     if result["reply_draft"]:
         print(f"\n  ✉️  DRAFT REPLY:")
         print(f"  {'-'*40}")
-        # Indent each line of the reply for readability
         for line in result["reply_draft"].split("\n"):
             print(f"    {line}")
     else:
@@ -83,7 +89,7 @@ def display_result(label, result):
     print()
 
 
-# ---- Run the full pipeline on test emails ----
+# ---- Run the full pipeline ----
 
 if __name__ == "__main__":
 
@@ -136,10 +142,16 @@ if __name__ == "__main__":
         ),
     ]
 
-    print("\n" + "🚀 InboxIQ Pipeline - Processing emails..." + "\n")
+    # Create a tracker for this entire run
+    tracker = PipelineTracker()
+
+    print("\n🚀 InboxIQ Pipeline - Processing emails...\n")
 
     for label, email_text in emails:
-        result = process_email(email_text)
+        result = process_email(email_text, tracker)
         display_result(label, result)
+
+    # Print the cost report at the end
+    tracker.print_summary()
 
     print("✅ All emails processed.\n")

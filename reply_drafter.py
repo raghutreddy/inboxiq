@@ -48,7 +48,7 @@ Just the reply body itself, ready to send."""
         temperature=0.4
     )
 
-    return response.choices[0].message.content
+    return response.choices[0].message.content, response
 
 
 # ---- Test ----
