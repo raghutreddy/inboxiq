@@ -152,3 +152,23 @@ if __name__ == "__main__":
     print(f"  \"Evaluated email classifier on {summary['total']}-case test suite:")
     print(f"   {summary['accuracy']}% accuracy, {summary['parse_rate']}% JSON parse rate,")
     print(f"   ${cost:.4f} total eval cost.\"\n")
+
+    # Save results to file
+    eval_output = {
+        "accuracy": summary["accuracy"],
+        "parse_rate": summary["parse_rate"],
+        "correct": summary["correct"],
+        "total": summary["total"],
+        "per_category": summary["per_category"],
+        "misclassifications": [
+            {"id": m["id"], "expected": m["expected"], "predicted": m["predicted"]}
+            for m in summary["misclassifications"]
+        ],
+        "total_cost_usd": cost,
+        "total_tokens": summary["cost"]["total_tokens"]
+    }
+
+    with open("eval_results.json", "w", encoding="utf-8") as f:
+        json.dump(eval_output, f, indent=2)
+
+    print(f"  📁 Results saved to eval_results.json\n")

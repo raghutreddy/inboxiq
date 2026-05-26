@@ -1,0 +1,22 @@
+{
+  "accuracy": 95.0,
+  "parse_rate": 100.0,
+  "correct": 19,
+  "total": 20,
+  "per_category": {
+    "URGENT_ACTION": 100.0,
+    "NEEDS_REPLY": 75.0,
+    "FYI": 100.0,
+    "SPAM": 100.0,
+    "MEETING": 100.0
+  },
+  "misclassifications": [
+    {
+      "id": "eval_012",
+      "expected": "NEEDS_REPLY",
+      "predicted": "URGENT_ACTION"
+    }
+  ],
+  "total_cost_usd": 0.001437,
+  "total_tokens": 6001
+}
