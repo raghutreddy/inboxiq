@@ -1,10 +1,10 @@
 # action_extractor.py - Extracts action items / to-dos from emails
-# Works on ALL email categories, not just urgent ones
+# Now with retry logic and safe JSON parsing
 
 import os
-import json
 from dotenv import load_dotenv
 from openai import OpenAI
+from guardrails import call_with_retry, safe_parse_json
 
 load_dotenv()
 client = OpenAI()
@@ -13,6 +13,7 @@ def extract_actions(email_text):
     """
     Takes raw email text.
     Returns a list of action items with owners and deadlines.
+    Protected by retry logic and safe JSON parsing.
     """
 
     system_prompt = """You are an action item extraction assistant.
@@ -38,46 +39,20 @@ Respond ONLY in this exact JSON format, nothing else:
     "total_count": 0
 }"""
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": f"Extract action items from this email:\n\n{email_text}"}
-        ],
-        max_tokens=400,
-        temperature=0.1
-    )
+    def make_api_call():
+        return client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"Extract action items from this email:\n\n{email_text}"}
+            ],
+            max_tokens=400,
+            temperature=0.1
+        )
 
+    response = call_with_retry(make_api_call, step_name="extract_actions")
     result_text = response.choices[0].message.content
 
-    try:
-        result = json.loads(result_text)
-        return result, response
-    except json.JSONDecodeError:
-        return {"error": "Failed to parse response", "raw": result_text}, response
+    result, parse_success = safe_parse_json(result_text)
 
-
-# ---- Test ----
-if __name__ == "__main__":
-
-    # Email with multiple action items
-    test_email = """
-    From: boss@company.com
-    Subject: URGENT: Client presentation moved to tomorrow 9 AM
-
-    Hi team,
-    The client presentation has been moved up to tomorrow morning at 9 AM.
-    Please have all slides finalized by tonight. This is our biggest account
-    and we cannot afford any mistakes. Send me your sections by 6 PM today.
-    
-    Also, Sarah — please book the large conference room for 8:30 AM so we 
-    can do a dry run before the client arrives.
-    
-    Mike, make sure the demo environment is working and tested by end of day.
-    """
-
-    result = extract_actions(test_email)
-    print("=" * 50)
-    print("EXTRACTED ACTION ITEMS:")
-    print("=" * 50)
-    print(json.dumps(result, indent=2))
+    return result, response

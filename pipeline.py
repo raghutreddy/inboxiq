@@ -7,6 +7,7 @@ from classifier import classify_email
 from reply_drafter import draft_reply
 from action_extractor import extract_actions
 from cost_tracker import PipelineTracker
+from guardrails import validate_email_input
 
 
 MODEL = "gpt-4o-mini"
@@ -23,6 +24,14 @@ def process_email(email_text, tracker):
         "reply_draft": None,
         "action_items": None
     }
+
+    # ---- Input Validation ----
+    is_valid, error_msg = validate_email_input(email_text)
+    if not is_valid:
+        print(f"  ❌ Invalid input: {error_msg}")
+        result["classification"] = {"category": "ERROR", "error": error_msg}
+        return result
+
 
     # ---- Step 1: Classify ----
     print("  [1/3] Classifying email...")

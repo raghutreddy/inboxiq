@@ -1,10 +1,10 @@
 # reply_drafter.py - Drafts professional email replies
-# Only called when classifier says URGENT_ACTION or NEEDS_REPLY
+# Now with retry logic for reliability
 
 import os
-import json
 from dotenv import load_dotenv
 from openai import OpenAI
+from guardrails import call_with_retry
 
 load_dotenv()
 client = OpenAI()
@@ -13,9 +13,9 @@ def draft_reply(email_text, category, urgency_score):
     """
     Takes the original email + classification results.
     Returns a professional reply draft.
+    Protected by retry logic.
     """
 
-    # Adjust tone based on urgency
     if urgency_score >= 4:
         tone_instruction = "Use a prompt, action-oriented tone. Show urgency without panic."
     elif urgency_score >= 2:
@@ -38,34 +38,16 @@ Rules:
 Respond ONLY with the reply text. No subject line, no "Here's a draft", no explanation.
 Just the reply body itself, ready to send."""
 
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": f"Draft a reply to this email:\n\n{email_text}"}
-        ],
-        max_tokens=300,
-        temperature=0.4
-    )
+    def make_api_call():
+        return client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"Draft a reply to this email:\n\n{email_text}"}
+            ],
+            max_tokens=300,
+            temperature=0.4
+        )
 
+    response = call_with_retry(make_api_call, step_name="reply_draft")
     return response.choices[0].message.content, response
-
-
-# ---- Test ----
-if __name__ == "__main__":
-
-    test_email = """
-    From: boss@company.com
-    Subject: URGENT: Client presentation moved to tomorrow 9 AM
-    
-    Hi team,
-    The client presentation has been moved up to tomorrow morning at 9 AM. 
-    Please have all slides finalized by tonight. This is our biggest account 
-    and we cannot afford any mistakes. Send me your sections by 6 PM today.
-    """
-
-    reply = draft_reply(test_email, category="URGENT_ACTION", urgency_score=5)
-    print("=" * 50)
-    print("DRAFTED REPLY:")
-    print("=" * 50)
-    print(reply)
