@@ -1,0 +1,142 @@
+[
+    {
+        "id": "eval_001",
+        "from": "ceo@company.com",
+        "subject": "URGENT: Board meeting prep needed by EOD",
+        "body": "I need the quarterly financials summary on my desk by 5 PM today. The board meets tomorrow at 8 AM. This is top priority — drop everything else.",
+        "expected_category": "URGENT_ACTION"
+    },
+    {
+        "id": "eval_002",
+        "from": "teammate@company.com",
+        "subject": "Can you review my PR?",
+        "body": "Hey, I just pushed a pull request for the new login feature. Could you take a look when you get a chance? No rush, just want fresh eyes on it before I merge. Thanks!",
+        "expected_category": "NEEDS_REPLY"
+    },
+    {
+        "id": "eval_003",
+        "from": "it@company.com",
+        "subject": "Scheduled maintenance this weekend",
+        "body": "Hi all, the IT team will be performing scheduled server maintenance this Saturday from 2 AM to 6 AM. You may experience brief service interruptions. No action is required on your part.",
+        "expected_category": "FYI"
+    },
+    {
+        "id": "eval_004",
+        "from": "promos@shopnow-deals.com",
+        "subject": "FLASH SALE: 80% off designer brands!!!",
+        "body": "Don't miss out on the biggest sale of the year! Designer brands at 80% off. Use code SAVE80 at checkout. Offer expires midnight tonight! Shop now at shopnow-deals.com!",
+        "expected_category": "SPAM"
+    },
+    {
+        "id": "eval_005",
+        "from": "manager@company.com",
+        "subject": "Team sync moved to Wednesday 3 PM",
+        "body": "Hi team, our weekly sync has been moved from Tuesday to Wednesday at 3 PM this week due to a scheduling conflict. Same Zoom link as usual. Please update your calendars.",
+        "expected_category": "MEETING"
+    },
+    {
+        "id": "eval_006",
+        "from": "client@partner.com",
+        "subject": "Invoice overdue — payment needed ASAP",
+        "body": "Hi, this is a reminder that invoice #4521 for $12,500 is now 15 days overdue. Please process payment immediately to avoid service interruption. Contact billing@partner.com if you have questions.",
+        "expected_category": "URGENT_ACTION"
+    },
+    {
+        "id": "eval_007",
+        "from": "friend@gmail.com",
+        "subject": "Lunch tomorrow?",
+        "body": "Hey! Are you free for lunch tomorrow? I was thinking that new Thai place on Main Street. Let me know!",
+        "expected_category": "NEEDS_REPLY"
+    },
+    {
+        "id": "eval_008",
+        "from": "noreply@company.com",
+        "subject": "Your expense report has been approved",
+        "body": "Your expense report ER-2024-0892 for $347.50 has been approved by your manager. Reimbursement will be processed in the next payroll cycle. No action required.",
+        "expected_category": "FYI"
+    },
+    {
+        "id": "eval_009",
+        "from": "winner@lottery-intl.com",
+        "subject": "You've won $1,000,000!!!",
+        "body": "CONGRATULATIONS! Your email was randomly selected as the winner of our international lottery! To claim your $1,000,000 prize, reply with your full name, address, and bank details. Act now!",
+        "expected_category": "SPAM"
+    },
+    {
+        "id": "eval_010",
+        "from": "recruiter@techcorp.com",
+        "subject": "Interview scheduled: Thursday 10 AM",
+        "body": "Hi, we'd like to invite you for a technical interview this Thursday at 10 AM via Zoom. The interview will be 60 minutes and will cover system design and coding. Please confirm your availability. Zoom link: zoom.us/j/123456",
+        "expected_category": "MEETING"
+    },
+    {
+        "id": "eval_011",
+        "from": "security@company.com",
+        "subject": "CRITICAL: Suspicious login detected on your account",
+        "body": "We detected a login attempt from an unrecognized device in a different country. If this wasn't you, reset your password immediately and enable 2FA. Time-sensitive — your account may be compromised.",
+        "expected_category": "URGENT_ACTION"
+    },
+    {
+        "id": "eval_012",
+        "from": "pm@company.com",
+        "subject": "Can you estimate the API migration effort?",
+        "body": "Hey, we're planning the Q3 roadmap and need an effort estimate for migrating from REST to GraphQL. Could you put together a rough estimate — number of endpoints, expected timeline, and risks? Need it by Friday if possible.",
+        "expected_category": "NEEDS_REPLY"
+    },
+    {
+        "id": "eval_013",
+        "from": "newsletter@ainews.com",
+        "subject": "Weekly AI roundup: Top stories this week",
+        "body": "This week in AI: Meta releases new open-source model, Google announces Gemini updates, and a startup raises $200M for AI-powered drug discovery. Read the full stories at ainews.com.",
+        "expected_category": "FYI"
+    },
+    {
+        "id": "eval_014",
+        "from": "offers@cheapflights-now.com",
+        "subject": "Flights from $29!! Book before midnight!!",
+        "body": "UNBELIEVABLE DEALS! Fly anywhere for just $29! This offer won't last. Book NOW at cheapflights-now.com before all seats are gone! Limited availability!",
+        "expected_category": "SPAM"
+    },
+    {
+        "id": "eval_015",
+        "from": "hr@company.com",
+        "subject": "All-hands meeting: Friday 4 PM",
+        "body": "Reminder: company all-hands meeting this Friday at 4 PM in the main auditorium. The CEO will share Q2 results and upcoming strategic initiatives. Attendance is expected for all employees.",
+        "expected_category": "MEETING"
+    },
+    {
+        "id": "eval_016",
+        "from": "vendor@supplies.com",
+        "subject": "Your order has shipped",
+        "body": "Good news! Your order #ORD-77234 has shipped and is on its way. Estimated delivery: 3-5 business days. Tracking number: 1Z999AA10123456784. No action required.",
+        "expected_category": "FYI"
+    },
+    {
+        "id": "eval_017",
+        "from": "boss@company.com",
+        "subject": "Need your sign-off on the contract by noon",
+        "body": "Hi, the legal team finalized the vendor contract. I need your review and sign-off by noon today so we can send it out before end of business. The contract is attached. Let me know if you have concerns.",
+        "expected_category": "URGENT_ACTION"
+    },
+    {
+        "id": "eval_018",
+        "from": "teammate@company.com",
+        "subject": "Thoughts on the new design mockups?",
+        "body": "Hey, the design team shared new mockups for the dashboard redesign. I'd love to get your thoughts — especially on the navigation changes. Can you take a look and share feedback when you have time?",
+        "expected_category": "NEEDS_REPLY"
+    },
+    {
+        "id": "eval_019",
+        "from": "noreply@socialmedia.com",
+        "subject": "You have 5 new followers this week!",
+        "body": "Great news! 5 new people followed you this week. Check out your latest profile stats and see who's been viewing your posts. Visit socialmedia.com to learn more.",
+        "expected_category": "SPAM"
+    },
+    {
+        "id": "eval_020",
+        "from": "colleague@company.com",
+        "subject": "Project kickoff meeting — Monday 11 AM",
+        "body": "Hi everyone, the kickoff meeting for Project Phoenix is scheduled for Monday at 11 AM in Conference Room A. Please review the project brief beforehand — it's in the shared drive under /projects/phoenix. See you there!",
+        "expected_category": "MEETING"
+    }
+]
