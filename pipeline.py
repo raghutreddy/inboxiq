@@ -35,9 +35,11 @@ def process_email(email_text, tracker):
 
     # ---- Step 1: Classify ----
     print("  [1/3] Classifying email...")
-    classification, cls_response = classify_email(email_text)
-    tracker.log_call("classify", MODEL, cls_response)
+    classification, cls_usage = classify_email(email_text)
+    model_used = cls_usage.get("model", MODEL)
+    tracker.log_call("classify", model_used, cls_usage)
     result["classification"] = classification
+    print(f"         → Routed to: {cls_usage.get('provider', 'unknown')}/{model_used} ({cls_usage.get('complexity', 'n/a')})")
 
     # ---- Step 2: Draft reply (only if needed) ----
     category = classification.get("category", "")

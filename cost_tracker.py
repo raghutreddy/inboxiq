@@ -38,24 +38,34 @@ def calculate_cost(model, input_tokens, output_tokens):
 class PipelineTracker:
     """
     Tracks costs and timing across an entire pipeline run.
-    Collects stats from every API call, then generates a summary.
+    Collects stats from every API call, then generates a summary.    
     """
 
     def __init__(self):
         self.calls = []
         self.start_time = time.time()
+    
+    def log_call(self, step_name, model, usage_dict):
+        """
+        Logs one API call's usage.
+        Accepts a usage dict with input_tokens and output_tokens.
+        Works with both old response objects and new router usage dicts.
+        """
+        if isinstance(usage_dict, dict):
+            input_tokens = usage_dict.get("input_tokens", 0)
+            output_tokens = usage_dict.get("output_tokens", 0)
+            provider = usage_dict.get("provider", "unknown")
+        else:
+            input_tokens = usage_dict.usage.prompt_tokens
+            output_tokens = usage_dict.usage.completion_tokens
+            provider = "openai"
 
-    def log_call(self, step_name, model, response):
-        """
-        Logs one API call's usage. 
-        Pass the raw OpenAI response object — it contains token counts.
-        """
-        usage = response.usage
-        cost = calculate_cost(model, usage.prompt_tokens, usage.completion_tokens)
+        cost = calculate_cost(model, input_tokens, output_tokens)
 
         entry = {
             "step": step_name,
             "model": model,
+            "provider": provider,
             **cost
         }
         self.calls.append(entry)

@@ -1,19 +1,15 @@
 # classifier.py - Email Classification Engine for InboxIQ
-# Now with retry logic, safe JSON parsing, and output validation
+# Now uses the LLM Router for multi-provider support
 
-import os
-from dotenv import load_dotenv
-from openai import OpenAI
-from guardrails import call_with_retry, safe_parse_json, validate_classification
+from llm_router import call_llm, route_request
+from guardrails import safe_parse_json, validate_classification
 
-load_dotenv()
-client = OpenAI()
 
 def classify_email(email_text):
     """
     Takes raw email text as input.
-    Returns a classification with category, urgency, and reasoning.
-    Now protected by retry logic and output validation.
+    Routes to the best model based on complexity.
+    Returns classification result and usage stats.
     """
 
     system_prompt = """You are an expert email triage assistant. 
@@ -33,28 +29,29 @@ Respond ONLY in this exact JSON format, nothing else:
     "suggested_action": "What the user should do"
 }"""
 
-    # Wrap API call in retry logic
-    def make_api_call():
-        return client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": f"Classify this email:\n\n{email_text}"}
-            ],
-            max_tokens=200,
-            temperature=0.1
-        )
+    # Route to the best model based on email complexity
+    model_key, complexity = route_request(email_text)
 
-    response = call_with_retry(make_api_call, step_name="classify")
-    result_text = response.choices[0].message.content
+    # Make the call via the router
+    result_text, model_used, usage = call_llm(
+        system_prompt=system_prompt,
+        user_prompt=f"Classify this email:\n\n{email_text}",
+        model_key=model_key,
+        max_tokens=200,
+        temperature=0.1
+    )
 
-    # Safe JSON parsing (handles markdown fences, extra text, etc.)
+    # Safe JSON parsing
     result, parse_success = safe_parse_json(result_text)
 
-    # Validate the classification output
+    # Validate output
     if parse_success:
         is_valid, result, error_msg = validate_classification(result)
         if not is_valid:
             print(f"    ⚠️  Classification validation warning: {error_msg}")
 
-    return result, response
+    # Add routing info to usage
+    usage["complexity"] = complexity
+    usage["model_used"] = model_used
+
+    return result, usage
